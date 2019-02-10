@@ -58,8 +58,12 @@ void input_setSize(run_t* run, size_t sz) {
     }
     size_t old_sz = run->dynamicFileSz;
     run->dynamicFileSz = sz;
-    if (run->global->cfg.only_printable && old_sz < sz) {
-        memset(run->dynamicFile, ' ', sz - old_sz);
+    if (old_sz < sz) {
+        if (run->global->cfg.only_printable) {
+            memset(run->dynamicFile, ' ', sz - old_sz);
+        } else {
+            memset(run->dynamicFile, '\x00', sz - old_sz);
+        }
     }
 }
 
